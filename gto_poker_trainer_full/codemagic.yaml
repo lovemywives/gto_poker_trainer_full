@@ -1,0 +1,29 @@
+workflows:
+  react-android-apk:
+    name: 构建 GTO Poker Trainer APK
+    environment:
+      flutter: false
+      node: 18.16.0
+      android: true
+    scripts:
+      - name: 安装依赖
+        script: |
+          npm install
+      - name: 构建 Web 应用
+        script: |
+          npm run build
+      - name: 使用 Capacitor 打包 Android 应用
+        script: |
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npx cap init gto.poker.trainer "GTO Poker Trainer" --web-dir=dist --npm-client=npm
+          npx cap add android
+          npx cap copy
+    artifacts:
+      - android/app/build/outputs/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - your@email.com
+        notify:
+          success: true
+          failure: true
