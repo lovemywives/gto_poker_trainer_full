@@ -2,9 +2,8 @@ workflows:
   react-android-apk:
     name: 构建 GTO Poker Trainer APK
     environment:
-      flutter: false
-      node: 18.16.0
-      android: true
+      vars:
+        NODE_VERSION: 18.16.0
     scripts:
       - name: 安装依赖
         script: |
@@ -18,6 +17,8 @@ workflows:
           npx cap init gto.poker.trainer "GTO Poker Trainer" --web-dir=dist --npm-client=npm
           npx cap add android
           npx cap copy
+          cd android
+          ./gradlew assembleDebug
     artifacts:
       - android/app/build/outputs/**/*.apk
     publishing:
